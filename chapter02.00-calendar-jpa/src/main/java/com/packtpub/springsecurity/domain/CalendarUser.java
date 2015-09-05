@@ -1,8 +1,8 @@
 package com.packtpub.springsecurity.domain;
 
-import java.io.Serializable;
+import com.alibaba.fastjson.annotation.JSONField;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+import java.io.Serializable;
 
 /**
  * {@link CalendarUser} is this applications notion of a user. It is good to use your own objects to interact with a
@@ -10,13 +10,14 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * Security, leverage new Spring Security modules, or even swap out security implementations) you can do so easily.
  *
  * @author Rob Winch
- *
  */
 public class CalendarUser implements Serializable {
+    private static final long serialVersionUID = 8433999509932007961L;
     private Integer id;
     private String firstName;
     private String lastName;
     private String email;
+    @JSONField(serialize = false)
     private String password;
 
     /**
@@ -29,6 +30,10 @@ public class CalendarUser implements Serializable {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     /**
      * Gets the first name of the user.
      *
@@ -36,6 +41,10 @@ public class CalendarUser implements Serializable {
      */
     public String getFirstName() {
         return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     /**
@@ -47,6 +56,10 @@ public class CalendarUser implements Serializable {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     /**
      * Gets the last name of the user.
      *
@@ -56,38 +69,28 @@ public class CalendarUser implements Serializable {
         return lastName;
     }
 
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     /**
      * Gets the password for this user. In some instances, this password is not actually used. For example, when an in
      * memory authentication is used the password on the spring security User object is used.
      *
      * @return
      */
-    @JsonIgnore
+
     public String getPassword() {
         return password;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+    // --- convenience methods ---
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    // --- convenience methods ---
+    // --- override Object ---
 
     /**
      * Gets the full name in a formatted fashion. Note in a real application a formatter may be more appropriate, but in
@@ -95,12 +98,10 @@ public class CalendarUser implements Serializable {
      *
      * @return
      */
-    @JsonIgnore
+    @JSONField(serialize = false)
     public String getName() {
         return getLastName() + ", " + getFirstName();
     }
-
-    // --- override Object ---
 
     @Override
     public int hashCode() {
@@ -126,6 +127,4 @@ public class CalendarUser implements Serializable {
             return false;
         return true;
     }
-
-    private static final long serialVersionUID = 8433999509932007961L;
 }

@@ -1,33 +1,26 @@
 package com.packtpub.springsecurity.web.config;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
+import com.alibaba.fastjson.support.spring.FastJsonJsonView;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
+
+import java.util.Collections;
 
 /**
  * <p>
  * Here we leverage Spring 3.1's {@link EnableWebMvc} support. This allows more powerful configuration but still be
- * concise about it. Specifically it allows overriding {@link #requestMappingHandlerMapping()}. Note that this class is
+ * concise about it. Specifically it allows overriding {@link }. Note that this class is
  * loaded via the mvc-config.xml
  * </p>
  * <p>
  * You can find a fairly equivalent Spring MVC configuration below:
  * </p>
- *
+ * <p/>
  * <pre>
  * &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
  * &lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
@@ -65,11 +58,10 @@ import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
  * </pre>
  *
  * @author Rob Winch
- *
  */
 @Configuration
 @EnableWebMvc
-public class WebMvcConfig extends WebMvcConfigurationSupport {
+public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     /**
      * We mention this in the book, but this helps to ensure that the intercept-url patterns prevent access to our
@@ -79,34 +71,32 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
      * observe that security is bypassed since it did not match the pattern we provided. In later chapters, we discuss
      * how to secure the service tier which helps mitigate bypassing of the URL based security too.
      */
-    @Bean
-    @Override
-    public RequestMappingHandlerMapping requestMappingHandlerMapping() {
-        RequestMappingHandlerMapping result = super.requestMappingHandlerMapping();
-        result.setUseSuffixPatternMatch(false);
-        result.setUseTrailingSlashMatch(false);
-        return result;
+
+
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(31556926);
     }
 
     @Override
-    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(31556926);
+    public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
+        configurer.mediaType("json", MediaType.APPLICATION_JSON);
+        configurer.favorPathExtension(false).favorParameter(true);
     }
 
     @Bean
     public ContentNegotiatingViewResolver contentNegotiatingViewResolver() {
         ContentNegotiatingViewResolver result = new ContentNegotiatingViewResolver();
-        Map<String, String> mediaTypes = new HashMap<String, String>();
-        mediaTypes.put("json", MediaType.APPLICATION_JSON_VALUE);
-        result.setMediaTypes(mediaTypes);
-        MappingJacksonJsonView jacksonView = new MappingJacksonJsonView();
-        jacksonView.setExtractValueFromSingleKeyModel(true);
-        Set<String> modelKeys = new HashSet<String>();
-        modelKeys.add("events");
-        modelKeys.add("event");
-        jacksonView.setModelKeys(modelKeys);
-        result.setDefaultViews(Collections.singletonList((View) jacksonView));
+
+        FastJsonJsonView jsonView = new FastJsonJsonView();
+        jsonView.setExtractValueFromSingleKeyModel(true);
+
+        result.setDefaultViews(Collections.singletonList((View) jsonView));
         return result;
+    }
+
+    @Override
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+        configurer.enable();
     }
 
     @Bean
@@ -115,5 +105,14 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
         internalResolver.setPrefix("/WEB-INF/views/");
         internalResolver.setSuffix(".jsp");
         return internalResolver;
+    }
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        super.addViewControllers(registry);
+        registry.addViewController("/login/form")
+                .setViewName("login");
+        registry.addViewController("/errors/403")
+                .setViewName("/errors/403");
     }
 }
