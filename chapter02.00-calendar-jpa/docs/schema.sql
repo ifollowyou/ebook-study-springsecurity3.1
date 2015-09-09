@@ -1,5 +1,5 @@
 CREATE DATABASE IF NOT EXISTS `springsecurity` DEFAULT CHARACTER SET utf8;
-GRANT ALL PRIVILEGES ON springsecurity.* TO 'ifollowyoucalendar_users'@'%' IDENTIFIED BY 'ifollowyou';
+GRANT ALL PRIVILEGES ON springsecurity.* TO 'ifollowyou'@'%' IDENTIFIED BY 'ifollowyou';
 flush privileges;
 
 use springsecurity;
