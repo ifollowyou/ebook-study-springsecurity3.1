@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+
+<div layout:include="th/modal2 :: modal(modalId='messageId11', modalHeader='modalHeader22')" th:remove="tag">
+    <p layout:fragment="modal-content">Message goes here!</p>
+</div>
+</body>
+
+
+</html>
