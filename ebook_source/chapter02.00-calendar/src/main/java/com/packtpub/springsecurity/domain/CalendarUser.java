@@ -1,8 +1,10 @@
 package com.packtpub.springsecurity.domain;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.io.Serializable;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+
 
 /**
  * {@link CalendarUser} is this applications notion of a user. It is good to use your own objects to interact with a
@@ -62,8 +64,8 @@ public class CalendarUser implements Serializable {
      *
      * @return
      */
-    @JsonIgnore
-    public String getPassword() {
+@JSONField
+public String getPassword() {
         return password;
     }
 
@@ -95,7 +97,7 @@ public class CalendarUser implements Serializable {
      *
      * @return
      */
-    @JsonIgnore
+    @JSONField
     public String getName() {
         return getLastName() + ", " + getFirstName();
     }
