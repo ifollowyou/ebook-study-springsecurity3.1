@@ -29,8 +29,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 
 
-@Controller
-@RequestMapping("/")
+//@Controller
+//@RequestMapping("/")
 public class MessageController {
     private final MessageRepository messageRepository;
 

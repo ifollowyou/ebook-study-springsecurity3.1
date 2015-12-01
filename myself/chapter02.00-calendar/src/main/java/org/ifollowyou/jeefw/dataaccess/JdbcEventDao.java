@@ -90,7 +90,7 @@ public class JdbcEventDao implements EventDao {
     @Override
     @Transactional(readOnly = true)
     public List<Event> findForUser(int userId) {
-        return jdbcOperations.query(EVENT_QUERY + " and (e.owner = ? or e.attendee = ?) order by e.id", EVENT_ROW_MAPPER, userId, userId);
+        return jdbcOperations.query(EVENT_QUERY + " and (evt.owner = ? or evt.attendee = ?) order by evt.id", EVENT_ROW_MAPPER, userId, userId);
     }
 
     @Override

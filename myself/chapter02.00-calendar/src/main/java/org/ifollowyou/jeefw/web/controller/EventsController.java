@@ -7,6 +7,7 @@ import org.ifollowyou.jeefw.service.UserContext;
 import org.ifollowyou.jeefw.web.model.CreateEventForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +33,10 @@ public class EventsController {
 
     @RequestMapping("/")
     public ModelAndView events() {
-        return new ModelAndView("events/list", "events", calendarService.getEvents());
+        ModelAndView mv = new ModelAndView("events/list", "events", calendarService.getEvents());
+        mv.addObject("navi", "all");
+
+        return mv;
     }
 
     @RequestMapping("/my")
@@ -41,6 +45,8 @@ public class EventsController {
         Integer currentUserId = currentUser.getId();
         ModelAndView result = new ModelAndView("events/my", "events", calendarService.findForUser(currentUserId));
         result.addObject("currentUser", currentUser);
+        result.addObject("navi", "my");
+
         return result;
     }
 
@@ -51,7 +57,9 @@ public class EventsController {
     }
 
     @RequestMapping("/form")
-    public String createEventForm(@ModelAttribute CreateEventForm createEventForm) {
+    public String createEventForm(@ModelAttribute CreateEventForm createEventForm, Model model) {
+        model.addAttribute("navi", "form");
+
         return "events/create";
     }
 

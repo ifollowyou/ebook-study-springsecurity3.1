@@ -10,7 +10,11 @@
 <div class="container">
     <div layout:fragment="content">
 
-        <p>This shows all events for all users. Once security is applied it will only be viewable to administrators.</p>
+        <p id="description">
+            Below you can find the events for
+            <strong th:text="${currentUser.email}"></strong>.
+            Once security is applied this will be the events for the currently logged in user.
+        </p>
 
         <div th:replace="fragments/events :: events">&nbsp;</div>
     </div>

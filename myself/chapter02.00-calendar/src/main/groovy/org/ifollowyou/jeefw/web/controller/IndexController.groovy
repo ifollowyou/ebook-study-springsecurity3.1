@@ -7,13 +7,14 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.servlet.ModelAndView
 
 @Controller
-
 class IndexController {
 
-    @RequestMapping('/index')
+    @RequestMapping('/')
     public String index(Model model) {
         model.addAttribute("name", "wang");
-        "aaaindex"
+        model.addAttribute("navi", "home");
+
+        "index"
     }
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
