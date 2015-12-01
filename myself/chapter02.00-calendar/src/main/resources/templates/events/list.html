@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorator="layout">
+<head>
+    <title>Welcome!</title>
+</head>
+
+<body>
+<div class="container">
+    <div layout:fragment="content">
+
+        <p>This shows all events for all users. Once security is applied it will only be viewable to administrators.</p>
+
+        <div id="create" class="pull-right"><a href="${createUrl}">Create Event</a></div>
+
+
+        <table class="table table-bordered table-striped table-condensed">
+            <thead>
+            <tr>
+                <th>Date/Time</th>
+                <th>Owner</th>
+                <th>Attendee</th>
+                <th>Summary</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--#lists.size(list)-->
+            <tr th:each="event : ${events}">
+                <td th:text="${event.time}">Onions</td>
+                <td th:text="${event.owner.name}"></td>
+                <td th:text="${event.attendee.name}"></td>
+                <td>
+                    <a th:href="${event.id}" th:text="${event.summary}"></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

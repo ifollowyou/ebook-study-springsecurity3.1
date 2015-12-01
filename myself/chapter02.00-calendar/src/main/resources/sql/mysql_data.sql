@@ -1,3 +1,5 @@
+USE jeefw;
+
 INSERT INTO calendar_users (id, email, password, first_name, last_name)
 VALUES (0, 'user1@example.com', 'user1', 'User', '1');
 INSERT INTO calendar_users (id, email, password, first_name, last_name)

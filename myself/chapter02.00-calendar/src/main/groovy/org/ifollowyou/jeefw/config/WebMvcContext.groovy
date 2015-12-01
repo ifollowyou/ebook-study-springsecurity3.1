@@ -7,10 +7,13 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.support.ReloadableResourceBundleMessageSource
+import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.servlet.config.annotation.*
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver
+
+import javax.sql.DataSource
 
 @Configuration
 @ComponentScan(basePackages = ['org.ifollowyou.jeefw'])
@@ -63,6 +66,11 @@ class WebMvcContext extends WebMvcConfigurerAdapter implements ApplicationContex
         mappings.put("org.springframework.dao.DataAccessException", "error");
         b.setExceptionMappings(mappings);
         return b;
+    }
+
+    @Bean
+    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
     }
 
     @Controller
