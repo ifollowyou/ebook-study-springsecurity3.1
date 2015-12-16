@@ -1,6 +1,7 @@
 package org.ifollowyou.jeefw.config.model
 
 import com.zaxxer.hikari.HikariConfig
+import groovy.transform.CompileStatic
 import groovy.transform.ToString
 import groovy.util.logging.Slf4j
 import org.springframework.boot.context.properties.ConfigurationProperties
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component
 
 import javax.annotation.PostConstruct
 
+@CompileStatic
 @Component
 @ConfigurationProperties(prefix = 'hikari')
 @ToString(excludes = ['password'])

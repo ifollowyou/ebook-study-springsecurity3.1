@@ -1,5 +1,6 @@
 package org.ifollowyou.jeefw.config
 
+import groovy.transform.CompileStatic
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.context.MessageSource
@@ -15,8 +16,9 @@ import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver
 
 import javax.sql.DataSource
 
+@CompileStatic
 @Configuration
-@ComponentScan(basePackages = ['org.ifollowyou.jeefw'])
+@ComponentScan(basePackages = ['org.ifollowyou.jeefw.web'])
 @EnableWebMvc
 class WebMvcContext extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
@@ -33,7 +35,6 @@ class WebMvcContext extends WebMvcConfigurerAdapter implements ApplicationContex
         registry.addViewController("welcome").setViewName("welcome");
         registry.addViewController("admin").setViewName("admin");
     }
-
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -62,9 +63,10 @@ class WebMvcContext extends WebMvcConfigurerAdapter implements ApplicationContex
     @Bean
     public SimpleMappingExceptionResolver simpleMappingExceptionResolver() {
         SimpleMappingExceptionResolver b = new SimpleMappingExceptionResolver();
-        Properties mappings = new Properties();
-        mappings.put("org.springframework.dao.DataAccessException", "error");
-        b.setExceptionMappings(mappings);
+        b.setExceptionMappings([
+                "org.springframework.dao.DataAccessException": "error"
+        ] as Properties);
+
         return b;
     }
 

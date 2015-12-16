@@ -1,5 +1,6 @@
 package org.ifollowyou.jeefw.config.model
 
+import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.stereotype.Component
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
 
 @Component
+@CompileStatic
 @ConfigurationProperties(prefix = "em")
 @Slf4j
 class EntityManagerSettings {
